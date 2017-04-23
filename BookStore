@@ -1,0 +1,246 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Bookstore {
+
+
+	private static bookCollection bookCollection = new bookCollection();
+	static Scanner input = new Scanner(System.in);
+
+	public static void main(String[] args) {
+
+		displayMenu();
+		getMenuChoiceFromUser();
+
+		
+	}
+	private static void validate(String userChoice)
+	{
+		if(userChoice.length()>1 || userChoice.isEmpty())
+		{
+			System.out.println("please enter one of the following ");
+			displayMenu();
+			getMenuChoiceFromUser();
+		}
+	}
+	public static void displayMenu()
+	{
+		System.out.println("------------------------------------------------");
+		System.out.println("\t\t   Main Menu ");
+		System.out.println("------------------------------------------------");
+		System.out.println(" a - add a book         r - remove a book");
+		System.out.println(" s - search for books   f - find a book");
+		System.out.println(" d - display all books  q - quit ");
+		System.out.println("------------------------------------------------ ");
+	}
+	public static char getMenuChoiceFromUser()
+	{
+		while (true)
+		{
+			System.out.print("Enter command: ");
+			String userChoice = String.valueOf(input.nextLine());
+			validate(userChoice);
+			switch (userChoice)
+			{
+			case "a":
+				addBookToCollections();	
+				break;
+			case "A": 
+				addBookToCollections();	
+				break;
+			case "s": 
+				getBookByIsbn();
+				break;
+			case "S": 
+				getBookByIsbn();
+				break;
+			case "r": 
+				removeBookFromCollection();
+				break;
+			case "R": 
+				removeBookFromCollection();
+				break;
+			case "d": 
+				displayCollection();
+				break;
+			case "D": 
+				displayCollection();
+				break;
+			case "f": 
+				findBooks();
+				break;
+			case "F": 
+				findBooks();	
+				break;
+			case "q": 
+				System.exit(0);				
+				break;	
+			case "Q": 
+				System.exit(0);				
+				break;	
+			default:  
+				System.out.println("invalid choice");
+
+			}
+		}
+	}
+	public static void addBookToCollections()
+	{
+		System.out.println("Please enter the name of the book");
+		String title = input.nextLine();
+		System.out.println("Please enter the name of the author ");
+		String author = input.nextLine();
+		System.out.println("Please enter the ISBN ");
+		String isbn = input.nextLine();
+		bookCollection.addBook(title, author, isbn);//Title Author ISBN
+	}
+	public static void removeBookFromCollection()
+	{
+		System.out.println("Please enter the ISBN of the book you wish to remove");
+		String isbn = input.nextLine();
+		bookCollection.removeBook(isbn);
+	}
+	public static void getBookByIsbn()
+	{
+		System.out.println("please enter the ISBN of the book you wish to find");
+		String isbn = input.nextLine();
+		bookCollection.getbook(isbn);
+	}
+	public static void findBooks()
+	{
+		System.out.println("please enter a search terms");
+		String term = input.nextLine();
+		System.out.println("Would you like to search for title or author?");
+		String userChoice = input.nextLine();
+		int type = 1;
+		if(userChoice.equalsIgnoreCase("Title"))
+		{
+			type = 1;
+		}
+		else if (userChoice.equalsIgnoreCase("author"))
+		{
+			type = 2;
+		}
+		else
+		{
+			findBooks();
+		}
+		bookCollection.search(term ,type);//TERM TYPE
+
+		/*if type = 0 look through books array to find match with title
+		 * 
+		 *if type = 1 look through books array to find match with author
+		 */
+
+	}
+	public static void displayCollection()
+	{
+		bookCollection.toString();
+	}
+}
+
+class bookCollection extends Book
+
+{
+	Scanner sc = new Scanner(System.in);
+	private ArrayList<Book> books = new ArrayList<>();
+
+	public void addBook(String title, String author, String isbn)
+	{
+		setTitle(title);
+		setAuthor(author);
+		setISBN(isbn);
+	}
+
+	public void removeBook(String isbn)
+	{	
+		
+		
+		for(Book x: books)
+		{
+			if(getISBN().equals(isbn))
+			{
+				//TODO REMOVE BOOK
+			}
+		}
+		
+		
+		/*for(int i=0; i<books.size();i++)//TODO VAlIDATE INPUT
+		{
+			if(getISBN().equals(isbn))
+			{
+				//remove book//TODO
+			}
+		}*/
+	}
+
+	public void getbook(String isbn)
+	{
+		System.out.println("What book would you like to retrieve?");
+		String bookRetrived = sc.nextLine();
+		for(int i=0; i<books.size();i++)//TODO VAlIDATE INPUT
+		{
+			if(getISBN().equals(bookRetrived))
+			{
+				//retrieve book//TODO
+			}
+		}
+
+	}
+
+	public void search(String tearm, int type)
+	{
+		System.out.println("Searching....");
+	}
+	public String toString()
+	{
+		return null;//TODO
+	}
+
+}
+
+class Book
+{
+
+	private String title;
+	private String author;
+	private String isbn;
+	
+
+	public String getTitle() 
+	{
+		return title;
+	}
+
+	public String getAuthor() 
+	{
+		return author;
+	}
+
+	public String getISBN() 
+	{
+		return isbn;
+	}
+
+	public void setTitle(String title) 
+	{
+		this.title = title;
+	}
+
+	public void setAuthor(String author) 
+	{
+		this.author = author;
+	}
+
+	public void setISBN(String isbn) 
+	{
+		this.isbn = isbn;
+	}
+
+	public String toString()
+	{
+		return getISBN() + getAuthor() + getTitle();//TODO
+	}
+
+}
